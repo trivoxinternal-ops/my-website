@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Trivox AI Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #2E61FE;
+            --cyan: #00F0FF;
+            --dark-bg: #0A0E27;
+            --card-bg: #0F1429;
+            --success: #00FF88;
+            --warning: #FFB800;
+            --danger: #FF4444;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--dark-bg);
+            color: white;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--cyan));
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            background: var(--card-bg);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, var(--primary-blue), var(--cyan));
+        }
+
+        .request-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .user-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .user-info p {
+            color: #A8B2C1;
+            margin-bottom: 0.25rem;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(255, 184, 0, 0.2);
+            color: var(--warning);
+        }
+
+        .status-approved {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--success);
+        }
+
+        .status-denied {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .request-details {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-label {
+            color: #A8B2C1;
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-approve {
+            background: var(--success);
+            color: var(--dark-bg);
+        }
+
+        .btn-deny {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-delete {
+            background: rgba(255, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #A8B2C1;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #A8B2C1;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👥 User Management</h1>
+            <p>Review and manage dashboard access requests</p>
+        </div>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="totalUsers">0</div>
+                <div class="stat-label">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="pendingRequests">0</div>
+                <div class="stat-label">Pending Requests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="approvedUsers">0</div>
+                <div class="stat-label">Approved Users</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('pending')">⏳ Pending Requests</button>
+            <button class="tab" onclick="showTab('approved')">✅ Approved Users</button>
+            <button class="tab" onclick="showTab('all')">📋 All Users</button>
+        </div>
+
+        <div id="requestsContainer"></div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyB38xae3qLe1NM3v9F6WyIS9L1s4RujPzM",
+            authDomain: "trivox-ai.firebaseapp.com",
+            databaseURL: "https://trivox-ai-default-rtdb.firebaseio.com",
+            projectId: "trivox-ai",
+            storageBucket: "trivox-ai.firebasestorage.app",
+            messagingSenderId: "131013416793",
+            appId: "1:131013416793:web:63ee8877d568cb6312de48",
+            measurementId: "G-NQ13PN2WBR"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let currentTab = 'pending';
+        let allUsers = {};
+
+        // Load users
+        async function loadUsers() {
+            try {
+                const snapshot = await db.ref('users').once('value');
+                allUsers = snapshot.val() || {};
+                
+                updateStats();
+                displayUsers(currentTab);
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const users = Object.values(allUsers);
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('pendingRequests').textContent = users.filter(u => u.status === 'pending').length;
+            document.getElementById('approvedUsers').textContent = users.filter(u => u.status === 'approved').length;
+        }
+
+        // Display users based on tab
+        function displayUsers(tab) {
+            currentTab = tab;
+            const container = document.getElementById('requestsContainer');
+            const users = Object.entries(allUsers);
+            
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event?.target.classList.add('active');
+            
+            // Filter users
+            let filteredUsers = users;
+            if (tab === 'pending') {
+                filteredUsers = users.filter(([id, user]) => user.status === 'pending');
+            } else if (tab === 'approved') {
+                filteredUsers = users.filter(([id, user]) => user.status === 'approved');
+            }
+            
+            if (filteredUsers.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No ${tab === 'all' ? 'users' : tab + ' requests'} found</h3>
+                        <p>${tab === 'pending' ? 'All caught up! No pending access requests.' : ''}</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = filteredUsers.map(([userId, user]) => `
+                <div class="request-card">
+                    <div class="request-header">
+                        <div class="user-info">
+                            <h3>${user.name}</h3>
+                            <p>📧 ${user.email}</p>
+                            <p>🏢 ${user.company}</p>
+                            <p>🕐 Requested: ${new Date(user.requestedAt).toLocaleString()}</p>
+                        </div>
+                        <span class="status-badge status-${user.status}">${user.status.toUpperCase()}</span>
+                    </div>
+                    
+                    <div class="request-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Requested Role:</span>
+                            <span><strong>${user.role.toUpperCase()}</strong></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Reason:</span>
+                            <span>${user.reason}</span>
+                        </div>
+                        ${user.approvedBy ? `
+                            <div class="detail-row">
+                                <span class="detail-label">Approved By:</span>
+                                <span>${user.approvedBy} on ${new Date(user.approvedAt).toLocaleString()}</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="actions">
+                        ${user.status === 'pending' ? `
+                            <button class="btn btn-approve" onclick="approveUser('${userId}')">
+                                ✅ Approve
+                            </button>
+                            <button class="btn btn-deny" onclick="denyUser('${userId}')">
+                                ❌ Deny
+                            </button>
+                        ` : ''}
+                        ${user.status !== 'pending' ? `
+                            <button class="btn btn-delete" onclick="deleteUser('${userId}')">
+                                🗑️ Delete User
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Approve user
+        async function approveUser(userId) {
+            if (!confirm('Approve this user?')) return;
+            
+            try {
+                await db.ref(`users/${userId}`).update({
+                    status: 'approved',
+                    approvedBy: 'admin@trivoxai.com', // Email to be replaced.
+                    approvedAt: Date.now()
+                });
+                
+                alert('✅ User approved! They can now login.');
+                loadUsers();
+            } catch (error) {
+                alert('Error approving user: ' + error.message);
+            }
+        }
+
+        // Deny user
+        async function denyUser(userId) {
+            const reason = prompt('Enter reason for denial (optional):');
+            
+            try {
+                await db.ref(`users/${userId}`).update({
+                    status: 'denied',
+                    deniedBy: 'admin@trivoxai.com',
+                    deniedAt: Date.now(),
+                    denialReason: reason || 'No reason provided'
+                });
+                
+                alert('❌ User denied.');
+                loadUsers();
+            } catch (error) {
+                alert('Error denying user: ' + error.message);
+            }
+        }
+
+        // Delete user
+        async function deleteUser(userId) {
+            if (!confirm('⚠️ Are you sure you want to delete this user? This cannot be undone.')) return;
+            
+            try {
+                await db.ref(`users/${userId}`).remove();
+                alert('🗑️ User deleted.');
+                loadUsers();
+            } catch (error) {
+                alert('Error deleting user: ' + error.message);
+            }
+        }
+
+        // Show tab
+        function showTab(tab) {
+            displayUsers(tab);
+        }
+
+        // Load on page load
+        loadUsers();
+
+        //To be Reloaded every 30 seconds
+        setInterval(loadUsers, 30000);
+    </script>
+</body>
+</html>

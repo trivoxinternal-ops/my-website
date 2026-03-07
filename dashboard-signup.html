@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivox AI - Request Dashboard Access</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #2E61FE;
+            --cyan: #00F0FF;
+            --dark-bg: #0A0E27;
+            --card-bg: #0F1429;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .signup-container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .signup-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(46, 97, 254, 0.2);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo p {
+            color: #A8B2C1;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #0c0c0c;
+            font-size: 0.9rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(246, 244, 244, 0.954);
+            border: 1px solid rgba(255, 255, 255, 0.911);
+            border-radius: 12px;
+            color: rgb(37, 36, 36);
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 20px rgba(46, 97, 254, 0.3);
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--cyan));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(46, 97, 254, 0.4);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #A8B2C1;
+        }
+
+        .login-link a {
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .error-message {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #FF4444;
+            color: #FF4444;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00FF88;
+            color: #00FF88;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .info-box {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--cyan);
+            color: var(--cyan);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-card">
+            <div class="logo">
+                <h1>🚀 Trivox AI</h1>
+                <p>Request Dashboard Access</p>
+            </div>
+
+            <div class="info-box">
+                📋 Fill out this form to request access to the admin dashboard. An admin will review and approve your request.
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" placeholder="John Doe" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" placeholder="john@company.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Choose Password *</label>
+                    <input type="password" id="password" placeholder="Min. 8 characters" required minlength="8">
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Company/Organization</label>
+                    <input type="text" id="company" placeholder="Acme Corp">
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Requested Role *</label>
+                    <select id="role" required>
+                        <option value="">Select a role</option>
+                        <option value="viewer">Viewer (Read-only access)</option>
+                        <option value="editor">Editor (Can manage leads)</option>
+                        <option value="admin">Admin (Full access)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="reason">Reason for Access *</label>
+                    <textarea id="reason" placeholder="Please explain why you need dashboard access..." required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    📤 Submit Access Request
+                </button>
+
+                <div class="login-link">
+                    Already have access? <a href="dashboard-login.html">Login here</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyB38xae3qLe1NM3v9F6WyIS9L1s4RujPzM",
+            authDomain: "trivox-ai.firebaseapp.com",
+            databaseURL: "https://trivox-ai-default-rtdb.firebaseio.com",
+            projectId: "trivox-ai",
+            storageBucket: "trivox-ai.firebasestorage.app",
+            messagingSenderId: "131013416793",
+            appId: "1:131013416793:web:63ee8877d568cb6312de48",
+            measurementId: "G-NQ13PN2WBR"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Signup Form Handler
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const password = document.getElementById('password').value;
+            const company = document.getElementById('company').value.trim();
+            const role = document.getElementById('role').value;
+            const reason = document.getElementById('reason').value.trim();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            
+            // Clear messages
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = '🔄 Submitting request...';
+            
+            try {
+                // Check if email already exists
+                const existingUser = await db.ref('users').orderByChild('email').equalTo(email).once('value');
+                
+                if (existingUser.exists()) {
+                    throw new Error('Email already registered. Please login or use a different email.');
+                }
+                
+                // Create user record
+                const userRef = db.ref('users').push();
+                await userRef.set({
+                    name: name,
+                    email: email,
+                    password: btoa(password), // Simple encoding (use proper hashing in production)
+                    company: company || 'N/A',
+                    role: role,
+                    reason: reason,
+                    status: 'pending',
+                    requestedAt: Date.now(),
+                    createdAt: Date.now()
+                });
+                
+                // Create admin notification
+                const notificationRef = db.ref('admin-notifications').push();
+                await notificationRef.set({
+                    type: 'access_request',
+                    userId: userRef.key,
+                    userName: name,
+                    userEmail: email,
+                    role: role,
+                    timestamp: Date.now(),
+                    read: false
+                });
+                
+                // Show success message
+                successMsg.innerHTML = `
+                    <strong>✅ Request Submitted Successfully!</strong><br><br>
+                    Your access request has been sent to the admin team. 
+                    You'll receive an email once your request is reviewed.<br><br>
+                    <strong>What happens next?</strong><br>
+                    1. Admin reviews your request<br>
+                    2. You receive approval notification<br>
+                    3. You can login with your email and password
+                `;
+                successMsg.style.display = 'block';
+                
+                // Clear form
+                document.getElementById('signupForm').reset();
+                submitBtn.textContent = '✅ Request Sent!';
+                
+                // Redirect to login after 5 seconds
+                setTimeout(() => {
+                    window.location.href = 'dashboard-login.html';
+                }, 5000);
+                
+            } catch (error) {
+                errorMsg.textContent = '❌ ' + error.message;
+                errorMsg.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📤 Submit Access Request';
+            }
+        });
+    </script>
+</body>
+</html>

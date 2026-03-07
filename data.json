@@ -1,0 +1,14 @@
+{
+  "users": {
+    "admin001": {
+      "name": "Admin",
+      "email": "trivoxinternal@gmail.com",
+      "password": "YWRtaW4xMjM=",
+      "role": "admin",
+      "status": "approved",
+      "createdAt": 1708531200000,
+      "company": "Trivox AI",
+      "requestedAt": 1708531200000
+    }
+  }
+}

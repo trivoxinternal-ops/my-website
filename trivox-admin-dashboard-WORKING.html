@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivox AI - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #2E61FE;
+            --cyan: #00F0FF;
+            --dark-bg: #0A0E27;
+            --card-bg: #0F1429;
+            --text-light: #E8EAED;
+            --text-gray: #A8B2C1;
+            --success: #00FF88;
+            --warning: #FFB800;
+            --danger: #FF4444;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--cyan));
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(46, 97, 254, 0.3);
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 2px solid rgba(46, 97, 254, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--cyan);
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cyan);
+        }
+
+        /* Controls */
+        .controls {
+            background: var(--card-bg);
+            border: 2px solid rgba(46, 97, 254, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.8rem 1.2rem;
+            background: rgba(10, 14, 39, 0.8);
+            border: 1px solid rgba(46, 97, 254, 0.3);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--cyan);
+        }
+
+        .filter-select {
+            padding: 0.8rem 1.2rem;
+            background: rgba(10, 14, 39, 0.8);
+            border: 1px solid rgba(46, 97, 254, 0.3);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-family: 'Sora', sans-serif;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Sora', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--cyan));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.4);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: var(--dark-bg);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Table */
+        .table-container {
+            background: var(--card-bg);
+            border: 2px solid rgba(46, 97, 254, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(46, 97, 254, 0.1);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--cyan);
+            border-bottom: 2px solid rgba(46, 97, 254, 0.3);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(46, 97, 254, 0.1);
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(46, 97, 254, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(255, 184, 0, 0.2);
+            color: var(--warning);
+        }
+
+        .status-contacted {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--success);
+        }
+
+        .status-closed {
+            background: rgba(168, 178, 193, 0.2);
+            color: var(--text-gray);
+        }
+
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            margin: 0 0.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border: 2px solid var(--cyan);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            color: var(--cyan);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-gray);
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-field {
+            margin-bottom: 1rem;
+        }
+
+        .modal-field label {
+            display: block;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-field-value {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: var(--cyan);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-gray);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>📊 Trivox AI Admin Dashboard</h1>
+            <p>Manage contact form submissions and track analytics</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📧</div>
+                <div class="stat-label">Total Submissions</div>
+                <div class="stat-value" id="totalSubmissions">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-label">Pending</div>
+                <div class="stat-value" id="pendingCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-label">Contacted</div>
+                <div class="stat-value" id="contactedCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-label">Most Popular Service</div>
+                <div class="stat-value" id="popularService" style="font-size: 1.2rem;">-</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="🔍 Search by name, email, or company...">
+            
+            <select class="filter-select" id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="contacted">Contacted</option>
+                <!-- <option value="closed">Closed</option> -->
+            </select>
+
+            <select class="filter-select" id="serviceFilter">
+                <option value="all">All Services</option>
+                <option value="voice-agent">AI Voice Agent</option>
+                <option value="chatbot">AI Chatbot</option>
+                <option value="crm">CRM & Lead Automation</option>
+                <option value="workflow">Workflow Automation</option>
+                <option value="custom">Custom Solution</option>
+                <option value="consultation">General Consultation</option>
+            </select>
+
+            <button class="btn btn-primary" onclick="refreshData()">🔄 Refresh</button>
+            <button class="btn btn-success" onclick="exportToCSV()">📥 Export CSV</button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div id="loadingState" class="loading">
+                Loading submissions...
+            </div>
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-state-icon">📭</div>
+                <h3>No submissions yet</h3>
+                <p>Contact form submissions will appear here</p>
+            </div>
+            <table id="submissionsTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Company</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Submission Details</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase Configuration (SAME AS YOUR MAIN SITE)
+        const firebaseConfig = {
+            apiKey: "AIzaSyB38xae3qLe1NM3v9F6WyIS9L1s4RujPzM",
+            authDomain: "trivox-ai.firebaseapp.com",
+            databaseURL: "https://trivox-ai-default-rtdb.firebaseio.com",
+            projectId: "trivox-ai",
+            storageBucket: "trivox-ai.firebasestorage.app",
+            messagingSenderId: "131013416793",
+            appId: "1:131013416793:web:63ee8877d568cb6312de48",
+            measurementId: "G-NQ13PN2WBR"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let allSubmissions = [];
+        let filteredSubmissions = [];
+
+        // Load all submissions
+        async function loadSubmissions() {
+            try {
+                const snapshot = await db.ref('contacts').once('value');
+                allSubmissions = [];
+                
+                if (snapshot.exists()) {
+                    snapshot.forEach((child) => {
+                        allSubmissions.push({
+                            id: child.key,
+                            ...child.val()
+                        });
+                    });
+                    
+                    // Sort by timestamp (newest first)
+                    allSubmissions.sort((a, b) => b.timestamp - a.timestamp);
+                }
+                
+                filteredSubmissions = [...allSubmissions];
+                updateStats();
+                renderTable();
+                
+                document.getElementById('loadingState').style.display = 'none';
+                
+                if (allSubmissions.length === 0) {
+                    document.getElementById('emptyState').style.display = 'block';
+                } else {
+                    document.getElementById('submissionsTable').style.display = 'table';
+                }
+            } catch (error) {
+                console.error('Error loading submissions:', error);
+                alert('Error loading data. Please check your Firebase configuration.');
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalSubmissions').textContent = allSubmissions.length;
+            
+            const pending = allSubmissions.filter(s => s.status === 'pending').length;
+            const contacted = allSubmissions.filter(s => s.status === 'contacted').length;
+            
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('contactedCount').textContent = contacted;
+            
+            // Most popular service
+            const services = {};
+            allSubmissions.forEach(s => {
+                const service = s.service || 'unspecified';
+                services[service] = (services[service] || 0) + 1;
+            });
+            
+            let maxService = 'None';
+            let maxCount = 0;
+            for (let service in services) {
+                if (services[service] > maxCount) {
+                    maxCount = services[service];
+                    maxService = service.replace('-', ' ').toUpperCase();
+                }
+            }
+            
+            document.getElementById('popularService').textContent = maxService;
+        }
+
+        // Render table
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            filteredSubmissions.forEach(submission => {
+                const row = document.createElement('tr');
+                const date = new Date(submission.timestamp).toLocaleDateString();
+                const status = submission.status || 'pending';
+                
+                row.innerHTML = `
+                    <td>${date}</td>
+                    <td>${submission.name}</td>
+                    <td>${submission.email}</td>
+                    <td>${submission.company || '-'}</td>
+                    <td>${submission.service || '-'}</td>
+                    <td><span class="status-badge status-${status}">${status}</span></td>
+                    <td>
+                        <button class="action-btn btn-primary" onclick="viewDetails('${submission.id}')">👁️ View</button>
+                        <button class="action-btn btn-success" onclick="markAsContacted('${submission.id}')">✓</button>
+                        <button class="action-btn btn-danger" onclick="deleteSubmission('${submission.id}')">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Filter submissions
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const serviceFilter = document.getElementById('serviceFilter').value;
+            
+            filteredSubmissions = allSubmissions.filter(submission => {
+                const matchesSearch = 
+                    submission.name.toLowerCase().includes(searchTerm) ||
+                    submission.email.toLowerCase().includes(searchTerm) ||
+                    (submission.company && submission.company.toLowerCase().includes(searchTerm));
+                
+                const matchesStatus = statusFilter === 'all' || submission.status === statusFilter;
+                const matchesService = serviceFilter === 'all' || submission.service === serviceFilter;
+                
+                return matchesSearch && matchesStatus && matchesService;
+            });
+            
+            renderTable();
+        }
+
+        // View details
+        function viewDetails(id) {
+            const submission = allSubmissions.find(s => s.id === id);
+            if (!submission) return;
+            
+            const modal = document.getElementById('detailModal');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalBody.innerHTML = `
+                <div class="modal-field">
+                    <label>Name:</label>
+                    <div class="modal-field-value">${submission.name}</div>
+                </div>
+                <div class="modal-field">
+                    <label>Email:</label>
+                    <div class="modal-field-value">${submission.email}</div>
+                </div>
+                <div class="modal-field">
+                    <label>Company:</label>
+                    <div class="modal-field-value">${submission.company || 'Not provided'}</div>
+                </div>
+                <div class="modal-field">
+                    <label>Service:</label>
+                    <div class="modal-field-value">${submission.service || 'Not specified'}</div>
+                </div>
+                <div class="modal-field">
+                    <label>Message:</label>
+                    <div class="modal-field-value">${submission.message}</div>
+                </div>
+                <div class="modal-field">
+                    <label>Date:</label>
+                    <div class="modal-field-value">${new Date(submission.timestamp).toLocaleString()}</div>
+                </div>
+                <div class="modal-field">
+                    <label>IP Address:</label>
+                    <div class="modal-field-value">${submission.ipAddress || 'Unknown'}</div>
+                </div>
+                <div class="modal-field">
+                    <label>Status:</label>
+                    <div class="modal-field-value">
+                        <span class="status-badge status-${submission.status || 'pending'}">${submission.status || 'pending'}</span>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('detailModal').classList.remove('active');
+        }
+
+        // Mark as contacted
+        async function markAsContacted(id) {
+            try {
+                await db.ref(`contacts/${id}/status`).set('contacted');
+                await loadSubmissions();
+                alert('Status updated to "Contacted"');
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('Error updating status');
+            }
+        }
+
+        // Delete submission
+        async function deleteSubmission(id) {
+            if (!confirm('Are you sure you want to delete this submission?')) return;
+            
+            try {
+                await db.ref(`contacts/${id}`).remove();
+                await loadSubmissions();
+                alert('Submission deleted');
+            } catch (error) {
+                console.error('Error deleting submission:', error);
+                alert('Error deleting submission');
+            }
+        }
+
+        // Refresh data
+        function refreshData() {
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('submissionsTable').style.display = 'none';
+            loadSubmissions();
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            if (filteredSubmissions.length === 0) {
+                alert('No data to export');
+                return;
+            }
+            
+            const headers = ['Date', 'Name', 'Email', 'Company', 'Service', 'Message', 'Status', 'IP Address'];
+            const csvData = filteredSubmissions.map(s => [
+                new Date(s.timestamp).toLocaleString(),
+                s.name,
+                s.email,
+                s.company || '',
+                s.service || '',
+                s.message.replace(/"/g, '""'),
+                s.status || 'pending',
+                s.ipAddress || ''
+            ]);
+            
+            let csv = headers.join(',') + '\n';
+            csvData.forEach(row => {
+                csv += row.map(field => `"${field}"`).join(',') + '\n';
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `trivox-submissions-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
+
+        // Event listeners
+        document.getElementById('searchBox').addEventListener('input', applyFilters);
+        document.getElementById('statusFilter').addEventListener('change', applyFilters);
+        document.getElementById('serviceFilter').addEventListener('change', applyFilters);
+
+        // Close modal on click outside
+        document.getElementById('detailModal').addEventListener('click', (e) => {
+            if (e.target.id === 'detailModal') closeModal();
+        });
+
+        // ===========================================
+        // AUTHENTICATION CHECK
+        // ===========================================
+        
+        // Check if user is logged in
+        const dashboardUser = sessionStorage.getItem('dashboardUser');
+        
+        if (!dashboardUser) {
+            // Not logged in - redirect to login page
+            window.location.href = 'dashboard-login.html';
+        } else {
+            // User is logged in - show dashboard
+            const user = JSON.parse(dashboardUser);
+            console.log('✅ Dashboard accessed by:', user.email);
+            
+            // Optional: Add logout button or user info to header
+            // You can customize this based on your needs
+        }
+
+        // Initialize
+        loadSubmissions();
+    </script>
+</body>
+</html>

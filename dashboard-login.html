@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivox AI - Dashboard Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #2E61FE;
+            --cyan: #00F0FF;
+            --dark-bg: #0A0E27;
+            --card-bg: #0F1429;
+        }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            max-width: 450px;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(46, 97, 254, 0.2);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo p {
+            color: #A8B2C1;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #A8B2C1;
+            font-size: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 20px rgba(46, 97, 254, 0.3);
+        }
+
+        input::placeholder {
+            color: #666;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--cyan));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Sora', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(46, 97, 254, 0.4);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 2rem 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .signup-link a {
+            color: var(--cyan);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid #FF4444;
+            color: #FF4444;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid #00FF88;
+            color: #00FF88;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        .forgot-password a {
+            color: var(--cyan);
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <canvas class="bg-animation" id="bgCanvas"></canvas>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <h1>🚀 Trivox AI</h1>
+                <p>Admin Dashboard Access</p>
+            </div>
+
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="admin@trivoxai.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    🔓 Login to Dashboard
+                </button>
+
+                <div class="divider">or</div>
+
+                <div class="signup-link">
+                    Don't have access? <a href="dashboard-signup.html">Request Access</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+        // Background Animation
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        for (let i = 0; i < 50; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                size: Math.random() * 2 + 1
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(46, 97, 254, 0.5)';
+                ctx.fill();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyB38xae3qLe1NM3v9F6WyIS9L1s4RujPzM",
+            authDomain: "trivox-ai.firebaseapp.com",
+            databaseURL: "https://trivox-ai-default-rtdb.firebaseio.com",
+            projectId: "trivox-ai",
+            storageBucket: "trivox-ai.firebasestorage.app",
+            messagingSenderId: "131013416793",
+            appId: "1:131013416793:web:63ee8877d568cb6312de48",
+            measurementId: "G-NQ13PN2WBR"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Login Form Handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            
+            // Clear messages
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            
+            // Disable button
+            loginBtn.disabled = true;
+            loginBtn.textContent = '🔄 Checking credentials...';
+            
+            try {
+                // Check if user exists and is approved
+                const usersSnapshot = await db.ref('users').orderByChild('email').equalTo(email).once('value');
+                
+                if (!usersSnapshot.exists()) {
+                    throw new Error('User not found. Please request access first.');
+                }
+                
+                const userData = Object.values(usersSnapshot.val())[0];
+                const userId = Object.keys(usersSnapshot.val())[0];
+                
+                // Check status
+                if (userData.status === 'pending') {
+                    throw new Error('Your access request is pending admin approval.');
+                }
+                
+                if (userData.status === 'denied') {
+                    throw new Error('Your access request was denied. Please contact admin.');
+                }
+                
+                if (userData.status !== 'approved') {
+                    throw new Error('Account not active. Please contact admin.');
+                }
+                
+                // Verify password (simple hash check - in production use proper hashing)
+                if (userData.password !== btoa(password)) {
+                    throw new Error('Incorrect password.');
+                }
+                
+                // Success! Store session
+                sessionStorage.setItem('dashboardUser', JSON.stringify({
+                    userId: userId,
+                    email: userData.email,
+                    name: userData.name,
+                    role: userData.role
+                }));
+                
+                // Update last login
+                await db.ref(`users/${userId}`).update({
+                    lastLogin: Date.now()
+                });
+                
+                // Show success message
+                successMsg.textContent = '✅ Login successful! Redirecting...';
+                successMsg.style.display = 'block';
+                
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = 'trivox-admin-dashboard-WORKING.html';
+                }, 1500);
+                
+            } catch (error) {
+                errorMsg.textContent = '❌ ' + error.message;
+                errorMsg.style.display = 'block';
+                loginBtn.disabled = false;
+                loginBtn.textContent = '🔓 Login to Dashboard';
+            }
+        });
+    </script>
+</body>
+</html>
