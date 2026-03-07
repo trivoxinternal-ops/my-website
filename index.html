@@ -5834,5 +5834,21 @@ body.light-mode h3 {
 
     })();
     </script>
+    <script>
+    const cursorWrapper = document.getElementById('cursor-wrapper');
+
+    document.addEventListener('mousemove', (e) => {
+        // This moves the div to your actual mouse position
+        cursorWrapper.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+    });
+
+    // Optional: Add a effect when clicking
+    document.addEventListener('mousedown', () => {
+        cursorWrapper.style.scale = "0.8";
+    });
+    document.addEventListener('mouseup', () => {
+        cursorWrapper.style.scale = "1";
+    });
+</script>
     </body>
 </html>
