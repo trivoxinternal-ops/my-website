@@ -65,24 +65,25 @@
             display: block;
         }
 
-/* Ensure the default mouse is hidden on all interactive elements */
-a, button, .cta-btn-nav, .cta-primary, .cta-secondary {
-    cursor: none !important;
-}
-
-#cursor-svg {
+/* This ensures the custom cursor container is positioned correctly */
+#cursor-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 24px;
     height: 26px;
-    display: block;
-    background-image: url('mouse-cursor.png');
-    background-size: contain;
-    background-repeat: no-repeat;
+    pointer-events: none;
+    z-index: 10000;
+    transition: transform 0.1s ease-out; /* Smooths the movement slightly */
 }
 
-/* Optional: Add a subtle shrink effect when clicking */
-body.clicking #cursor-wrapper {
-    transform: scale(0.9);
-    transition: transform 0.1s;
+/* If you don't have mouse-cursor.png, use this basic SVG shape so you can at least see it */
+#cursor-svg {
+    width: 100%;
+    height: 100%;
+    background: var(--cyan);
+    clip-path: polygon(0% 0%, 100% 70%, 40% 70%, 0% 100%); /* Arrow shape */
+    box-shadow: 0 0 10px var(--cyan);
 }
         }
 
