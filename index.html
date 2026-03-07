@@ -65,14 +65,24 @@
             display: block;
         }
 
-        body.clicking #cursor-svg {
-            #cursor-svg {
+/* Ensure the default mouse is hidden on all interactive elements */
+a, button, .cta-btn-nav, .cta-primary, .cta-secondary {
+    cursor: none !important;
+}
+
+#cursor-svg {
     width: 24px;
     height: 26px;
     display: block;
     background-image: url('mouse-cursor.png');
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+/* Optional: Add a subtle shrink effect when clicking */
+body.clicking #cursor-wrapper {
+    transform: scale(0.9);
+    transition: transform 0.1s;
 }
         }
 
