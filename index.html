@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Trivox AI - Transform your business with custom AI automation systems. 24/7 AI voice agents, chatbots, workflow automation, and intelligent CRM solutions.">
     <title>Trivox AI - Custom AI Automation for Growing Businesses</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -54,9 +53,11 @@
             top: 0;
             left: 0;
             pointer-events: none;
-            z-index: 99999;
+            z-index: 2147483647;
             will-change: transform;
-            transform: translate(-200px, -200px);
+            transform: translate3d(-200px,-200px,0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
         #cursor-svg {
@@ -65,15 +66,8 @@
             display: block;
         }
 
-body.clicking #cursor-svg {
-            #cursor-svg {
-    width: 24px;
-    height: 26px;
-    display: block;
-    background-image: url('mouse-cursor.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-}
+        body.clicking #cursor-svg {
+            opacity: 0.75;
         }
 
         /* ========== BACKGROUND EFFECTS ========== */
@@ -630,6 +624,7 @@ body.clicking #cursor-svg {
             margin: 3rem auto;
             max-width: 1200px;
             perspective: 1000px;
+            isolation: isolate;
         }
 
         .image-grid-item {
@@ -644,8 +639,8 @@ body.clicking #cursor-svg {
                 0 0 40px rgba(46, 97, 254, 0.3),
                 inset 0 0 0 1px rgba(255, 255, 255, 0.1);
             background: linear-gradient(135deg, rgba(46, 97, 254, 0.1), rgba(0, 240, 255, 0.05));
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            will-change: transform;
+            transition: box-shadow 0.3s ease;
         }
 
         .image-grid-item::before {
@@ -805,7 +800,7 @@ body.clicking #cursor-svg {
         }
 
         .image-grid-item:hover {
-            transform: scale(1.05) !important;
+            animation-play-state: paused;
             z-index: 10;
             border-color: var(--cyan);
             box-shadow: 
@@ -1862,13 +1857,11 @@ body.clicking #cursor-svg {
             width: 100%; height: 100%;
             border-radius: 12px;
             pointer-events: auto;
-            cursor: auto;
         }
-
-        .cs-demo-overlay, .cs-demo-container, .cs-demo-close {
-            cursor: auto;
+        .cs-demo-overlay, .cs-demo-container {
+            pointer-events: auto;
         }
-        .cs-demo-close { cursor: pointer; }
+        .cs-demo-close { pointer-events: auto; }
 
         /* Responsive film strip */
         @media (max-width: 768px) {
@@ -2860,6 +2853,12 @@ body.light-mode h3 {
             .section-title { font-size: clamp(1.4rem, 7vw, 1.8rem) !important; }
         }
 
+        /* light mode only: video label text locked white (dark bg) */
+        body.light-mode #csDemoThumb .cs-featured-video-label span,
+        body.light-mode #csDemoThumb .cs-featured-video-label p {
+            color: #ffffff !important;
+        }
+
         /* light mode only: notification toasts */
         body.light-mode .notification {
             background: #ffffff;
@@ -2889,6 +2888,36 @@ body.light-mode h3 {
             color: #00b359;
         }
 
+    /* NEON CURSOR: global suppression */
+    html, body, *, *::before, *::after {
+        cursor: none !important;
+    }
+    a, button, select, input, textarea, label,
+    video, audio, canvas, img, svg, iframe,
+    [role="button"], [tabindex], [onclick],
+    summary, details {
+        cursor: none !important;
+    }
+    [style*="cursor"] {
+        cursor: none !important;
+    }
+    /* EXCEPTION: cs-demo popup video native controls */
+    body.cs-video-open #csDemoFull {
+        cursor: auto !important;
+        pointer-events: auto !important;
+    }
+    /* Hide neon SVG when mouse is over the video */
+    body.cs-video-open.cursor-over-video #cursor-svg {
+        opacity: 0;
+    }
+    @media (hover: none) and (pointer: coarse) {
+        html, body, *, *::before, *::after,
+        a, button, select, input, textarea, label,
+        video, audio, canvas, img, svg, iframe,
+        [role="button"], [tabindex], [onclick] {
+            cursor: auto !important;
+        }
+    }
     </style>
 </head>
 <body>
@@ -4252,12 +4281,11 @@ body.light-mode h3 {
 
                     <!-- Featured Video -->
                     <div style="display:flex; justify-content:center; margin-bottom:2.5rem;">
-                        <div class="cs-featured-video" id="csDemoThumb" style="width:25%; margin-bottom:0; cursor:pointer;" onclick="openCsDemoPopup()">
+                        <div class="cs-featured-video" id="csDemoThumb" style="width:25%; margin-bottom:0;" onclick="openCsDemoPopup()">
                             <video autoplay muted loop playsinline preload="auto" style="pointer-events:none;">
                                 <source src="code clinic.mp4" type="video/mp4">
                             </video>
                             <div class="cs-featured-video-overlay" style="pointer-events:none;"></div>
-                            <div class="cs-featured-video-badge">🎬 Demo Video</div>
                             <div class="cs-featured-play-btn" style="pointer-events:none;">
                                 <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
                             </div>
@@ -4840,7 +4868,7 @@ body.light-mode h3 {
             function applyTransform() {
                 img.style.transform = `scale(${scale}) translate(${panX / scale}px, ${panY / scale}px)`;
                 document.getElementById('lb-zoom-label').textContent = Math.round(scale * 100) + '%';
-                wrap.style.cursor = scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default';
+                wrap.style.cursor = 'none'; /* neon cursor override */
             }
 
             // expose to buttons
@@ -5060,27 +5088,51 @@ body.light-mode h3 {
         // TRIVOX AI - COMPLETE JAVASCRIPT
         // ========================================
 
-        // Neon cursor — hardware-rate pointermove (pointerrawupdate where supported)
-        const wrapper = document.getElementById('cursor-wrapper');
-        if (wrapper) {
-            function moveNeonCursor(x, y) {
-                wrapper.style.transform = `translate(${x}px,${y}px)`;
+        // Neon cursor: zero-lag synchronous engine
+        (function() {
+            var wrapper = document.getElementById('cursor-wrapper');
+            if (!wrapper) return;
+            // MutationObserver: stamp cursor:none on dynamic elements, skip csDemoFull
+            var mo = new MutationObserver(function(muts) {
+                muts.forEach(function(m) {
+                    m.addedNodes.forEach(function(n) {
+                        if (n.nodeType !== 1 || n.id === 'csDemoFull') return;
+                        if (n.style) n.style.setProperty('cursor', 'none', 'important');
+                        if (n.querySelectorAll) {
+                            n.querySelectorAll('*').forEach(function(c) {
+                                if (c.id !== 'csDemoFull' && c.style)
+                                    c.style.setProperty('cursor', 'none', 'important');
+                            });
+                        }
+                    });
+                });
+            });
+            mo.observe(document.body, { childList: true, subtree: true });
+            // Synchronous write: no rAF deferral, cursor matches mouse 1:1
+            function move(x, y) {
+                wrapper.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
             }
             if (window.PointerEvent && 'onpointerrawupdate' in window) {
-                document.addEventListener('pointerrawupdate', e => {
+                document.addEventListener('pointerrawupdate', function(e) {
                     if (e.pointerType !== 'mouse' && e.pointerType !== 'pen') return;
-                    moveNeonCursor(e.clientX, e.clientY);
-                });
+                    var evts = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+                    var last = evts[evts.length - 1];
+                    move(last.clientX, last.clientY);
+                }, { passive: true });
             } else {
-                document.addEventListener('pointermove', e => {
-                    const events = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
-                    const last = events[events.length - 1];
-                    moveNeonCursor(last.clientX, last.clientY);
-                });
+                document.addEventListener('pointermove', function(e) {
+                    var evts = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+                    var last = evts[evts.length - 1];
+                    move(last.clientX, last.clientY);
+                }, { passive: true });
             }
-            document.addEventListener('pointerdown', () => document.body.classList.add('clicking'));
-            document.addEventListener('pointerup',   () => document.body.classList.remove('clicking'));
-        }
+            document.addEventListener('pointerdown', function() {
+                document.body.classList.add('clicking');
+            }, { passive: true });
+            document.addEventListener('pointerup', function() {
+                document.body.classList.remove('clicking');
+            }, { passive: true });
+        })();
         // Neural Network Canvas
         const neuralCanvas = document.getElementById('neural-canvas');
         if (neuralCanvas) {
@@ -5622,7 +5674,6 @@ body.light-mode h3 {
 
         // ---- Code Clinic demo video popup ----
         function openCsDemoPopup() {
-            // pause any thumbnail videos (works whether in modal clone or original)
             document.querySelectorAll('#csDemoThumb video').forEach(v => v.pause());
             var overlay = document.getElementById('csDemoOverlay');
             var full    = document.getElementById('csDemoFull');
@@ -5631,6 +5682,13 @@ body.light-mode h3 {
             full.currentTime = 0;
             full.play();
             document.body.style.overflow = 'hidden';
+            document.body.classList.add('cs-video-open');
+            full.addEventListener('mouseenter', function onVidEnter() {
+                document.body.classList.add('cursor-over-video');
+            });
+            full.addEventListener('mouseleave', function onVidLeave() {
+                document.body.classList.remove('cursor-over-video');
+            });
         }
         function closeCsDemo() {
             var overlay = document.getElementById('csDemoOverlay');
@@ -5640,7 +5698,7 @@ body.light-mode h3 {
             full.pause();
             full.currentTime = 0;
             document.body.style.overflow = '';
-            // resume thumbnail previews
+            document.body.classList.remove('cs-video-open', 'cursor-over-video');
             document.querySelectorAll('#csDemoThumb video').forEach(v => { try { v.play(); } catch(e){} });
         }
         var csDemoClose   = document.getElementById('csDemoClose');
