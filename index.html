@@ -2606,24 +2606,47 @@ body.light-mode h3 {
 
 
         /* light mode only: floating service card */
+
+        /* 1. Resting state: deep blue outer glow buffers dark card against white bg */
         body.light-mode .image-grid-item {
             box-shadow:
-                0 20px 60px rgba(46, 97, 254, 0.15),
-                0 0 40px rgba(46, 97, 254, 0.2),
-                inset 0 0 0 1px rgba(46, 97, 254, 0.15);
+                0 0  35px 8px  rgba(46, 97, 254, 0.35),
+                0 0  80px 20px rgba(46, 97, 254, 0.18),
+                0 20px 60px    rgba(46, 97, 254, 0.15),
+                inset 0 0 0 1px rgba(46, 97, 254, 0.20);
             background: linear-gradient(135deg, rgba(46, 97, 254, 0.08), rgba(0, 180, 255, 0.05));
         }
+
+        /* 2. Hover state: glow intensifies, border snaps to cyan */
         body.light-mode .image-grid-item:hover {
             box-shadow:
-                0 30px 80px rgba(46, 97, 254, 0.25),
-                0 0 60px rgba(46, 97, 254, 0.4),
-                inset 0 0 0 1px rgba(46, 97, 254, 0.35);
+                0 0  50px 12px rgba(46, 97, 254, 0.55),
+                0 0 110px 30px rgba(46, 97, 254, 0.28),
+                0 30px 80px    rgba(46, 97, 254, 0.25),
+                inset 0 0 0 1px rgba(46, 97, 254, 0.45);
         }
+
+        /* 3. Radial shimmer stays blue-toned in light mode */
         body.light-mode .image-grid-item::after {
-            background: radial-gradient(circle, rgba(46, 97, 254, 0.2) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(46, 97, 254, 0.22) 0%, transparent 70%);
         }
+
+        /* 4. Caption overlay uses deep dark gradient so text is readable in any mode */
         body.light-mode .image-grid-caption {
-            background: linear-gradient(to top, rgba(29, 53, 180, 0.93), rgba(46, 97, 254, 0.4), transparent);
+            background: linear-gradient(to top, rgba(10, 14, 39, 0.97), rgba(10, 14, 39, 0.6), transparent);
+        }
+
+        /* 5. Cyan text locked in both dark and light mode.
+              Caption always sits on a dark overlay so #00F0FF is legible either way. */
+        .image-grid-caption h3,
+        body.light-mode .image-grid-caption h3 {
+            color: #00F0FF !important;
+            -webkit-text-fill-color: #00F0FF !important;
+        }
+        .image-grid-caption p,
+        body.light-mode .image-grid-caption p {
+            color: rgba(0, 240, 255, 0.75) !important;
+            -webkit-text-fill-color: rgba(0, 240, 255, 0.75) !important;
         }
 
         /* light mode only: footer */
@@ -3749,7 +3772,7 @@ body.light-mode h3 {
             <div class="image-grid">
                 <!-- Messenger Bot Image -->
                 <div class="image-grid-item clickable fade-in" onclick="openServiceModal('chatbots')">
-                    <img src="messanger.jpg.jpeg" alt="AI Messenger Bot" class="ai-image">
+                    <img src="AI Messaging Assistant.png" alt="AI Messaging Assistant" class="ai-image">
                     <div class="image-grid-caption">
                         <h3 style="color: var(--cyan);">AI Messenger Bot</h3>
                         <p style="color: var(--text-gray);">Multi-channel communication automation</p>
@@ -3759,7 +3782,7 @@ body.light-mode h3 {
 
                 <!-- Voice AI Bot Image -->
                 <div class="image-grid-item clickable fade-in" onclick="openServiceModal('voice')">
-                    <img src="womanBot.jpg.jpeg" alt="Voice AI Assistant" class="ai-image">
+                    <img src="AI Voice Assistant.png" alt="AI Voice Assistant" class="ai-image">
                     <div class="image-grid-caption">
                         <h3 style="color: var(--cyan);">Voice AI Assistant</h3>
                         <p style="color: var(--text-gray);">Human-like voice interactions</p>
@@ -3769,7 +3792,7 @@ body.light-mode h3 {
 
                 <!-- Workflow Automation Image -->
                 <div class="image-grid-item clickable fade-in" onclick="openServiceModal('workflow')">
-                    <img src="WORKFLOW.jpg.jpeg" alt="Workflow Automation" class="ai-image">
+                    <img src="Workflow Automation.png" alt="Workflow Automation" class="ai-image">
                     <div class="image-grid-caption">
                         <h3 style="color: var(--cyan);">Workflow Automation</h3>
                         <p style="color: var(--text-gray);">End-to-end process optimization</p>
@@ -3779,7 +3802,7 @@ body.light-mode h3 {
 
                 <!-- Appointment Automation Image -->
                 <div class="image-grid-item clickable fade-in" onclick="openServiceModal('appointment')">
-                    <img src="APPOINTMENT.jpg.jpeg" alt="Appointment Automation" class="ai-image">
+                    <img src="AI Appointment Scheduling.png" alt="AI Appointment Scheduling" class="ai-image">
                     <div class="image-grid-caption">
                         <h3 style="color: var(--cyan);">Appointment Booking</h3>
                         <p style="color: var(--text-gray);">Automated scheduling 24/7</p>
@@ -3789,7 +3812,7 @@ body.light-mode h3 {
 
                 <!-- CRM Intelligence Image -->
                 <div class="image-grid-item clickable fade-in" onclick="openServiceModal('crm')">
-                    <img src="CRM.jpg.jpeg" alt="CRM Intelligence" class="ai-image">
+                    <img src="Intelligent CRM.png" alt="Intelligent CRM" class="ai-image">
                     <div class="image-grid-caption">
                         <h3 style="color: var(--cyan);">Intelligent CRM</h3>
                         <p style="color: var(--text-gray);">Automated lead tracking</p>
@@ -3799,7 +3822,7 @@ body.light-mode h3 {
 
                 <!-- AI Customer Support Image -->
                 <div class="image-grid-item clickable fade-in" onclick="openServiceModal('support')">
-                    <img src="43654.jpg" alt="AI Customer Support" class="ai-image">
+                    <img src="AI Customer Support.png" alt="AI Customer Support" class="ai-image">
                     <div class="image-grid-caption">
                         <h3 style="color: var(--cyan);">AI Customer Support</h3>
                         <p style="color: var(--text-gray);">24/7 intelligent assistance</p>
@@ -3809,7 +3832,7 @@ body.light-mode h3 {
 
                 <!-- Custom AI Solutions Image -->
                 <div class="image-grid-item clickable fade-in" onclick="openServiceModal('custom')">
-                    <img src="43654.jpg" alt="Custom AI Solutions" class="ai-image">
+                    <img src="Custom AI Architecture.png" alt="Custom AI Architecture" class="ai-image">
                     <div class="image-grid-caption">
                         <h3 style="color: var(--cyan);">Custom AI Solutions</h3>
                         <p style="color: var(--text-gray);">Built around your workflow</p>
@@ -3819,7 +3842,7 @@ body.light-mode h3 {
 
                 <!-- Industry-Agnostic AI Image -->
                 <div class="image-grid-item clickable fade-in" onclick="openServiceModal('industry')">
-                    <img src="43654.jpg" alt="Industry-Agnostic AI" class="ai-image">
+                    <img src="Agonstic AI Systems.png" alt="Agnostic AI Systems" class="ai-image">
                     <div class="image-grid-caption">
                         <h3 style="color: var(--cyan);">Industry-Agnostic AI</h3>
                         <p style="color: var(--text-gray);">Works across every sector</p>
@@ -4013,49 +4036,49 @@ body.light-mode h3 {
         <script>
         const svcData = {
             voice: {
-                img: 'womanBot.jpg.jpeg',
+                img: 'AI Voice Assistant.png',
                 title: 'AI Voice Agents',
                 desc: '24/7 AI phone agents that answer calls, book appointments, qualify leads, and provide human-like customer interactions.',
                 features: ['Natural conversation flow', 'Appointment scheduling', 'Lead qualification & routing', 'Replaces front desk staff']
             },
             chatbots: {
-                img: 'messanger.jpg.jpeg',
+                img: 'AI Messaging Assistant.png',
                 title: 'AI Chatbots',
                 desc: 'Intelligent chatbots for websites, WhatsApp, Instagram, and SMS that capture leads and answer questions instantly.',
                 features: ['Multi-channel deployment', 'Instant lead capture', 'Multilingual support', 'Auto-booking capability']
             },
             appointment: {
-                img: 'APPOINTMENT.jpg.jpeg',
+                img: 'AI Appointment Scheduling.png',
                 title: 'Appointment Automation',
                 desc: 'Fully automated scheduling with calendar sync, confirmations, and smart reminders that reduce no-shows.',
                 features: ['Google Calendar integration', 'SMS & email reminders', 'Auto-rescheduling', 'No-show reduction']
             },
             crm: {
-                img: 'CRM.jpg.jpeg',
+                img: 'Intelligent CRM.png',
                 title: 'CRM & Lead Automation',
                 desc: 'Every interaction becomes a lead automatically. Organized, tracked, and followed up without manual work.',
                 features: ['Automatic lead capture', 'Smart tagging & organization', 'Automated follow-ups', 'Zero leads lost']
             },
             workflow: {
-                img: 'WORKFLOW.jpg.jpeg',
+                img: 'Workflow Automation.png',
                 title: 'Workflow Automation',
                 desc: 'Automate repetitive business tasks end-to-end. Connect CRM, calendars, email, forms, and payments seamlessly.',
                 features: ['Custom workflow design', 'System integrations', 'Error reduction', 'Time efficiency']
             },
             support: {
-                img: '43654.jpg',
+                img: 'AI Customer Support.png',
                 title: 'AI Customer Support',
                 desc: '24/7 AI-powered support that handles common questions, reduces tickets, and scales without hiring.',
                 features: ['Always available support', 'Instant responses', 'Ticket reduction', 'Scalable solution']
             },
             custom: {
-                img: '43654.jpg',
+                img: 'Custom AI Architecture.png',
                 title: 'Custom AI Solutions',
                 desc: 'Solutions to general problems solved by customisable AI — built specifically around your business, not a template.',
                 features: ['Custom built AI systems based on client workflow', 'Not templates — designed per business', 'Scalable and adaptable as the business grows']
             },
             industry: {
-                img: '43654.jpg',
+                img: 'Agonstic AI Systems.png',
                 title: 'Industry-Agnostic AI Systems',
                 desc: 'Versatile artificial intelligence frameworks designed to function across multiple sectors without industry-specific limitations.',
                 features: ['Works for any business, not just one niche', 'Clinics, service businesses, real estate, agencies, etc.', 'Same core tech, different workflows']
