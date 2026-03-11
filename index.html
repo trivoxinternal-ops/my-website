@@ -2588,8 +2588,16 @@ body.light-mode h3 {
     color: transparent !important;
 }
 
-
-        /* light mode only: floating service card */
+        /* Keep image overlay text colors identical in light and dark mode */
+        body.light-mode .image-overlay h3 {
+            background: none !important;
+            -webkit-background-clip: unset !important;
+            background-clip: unset !important;
+            color: var(--cyan) !important;
+        }
+        body.light-mode .image-overlay p {
+            color: var(--text-gray) !important;
+        }
 
         /* 1. Resting state: deep blue outer glow buffers dark card against white bg */
         body.light-mode .image-grid-item {
@@ -4494,7 +4502,7 @@ body.light-mode h3 {
                             </div>
 
                             <div class="cs-strip-card" onclick="openLightbox('cs1-lb', 2)">
-                                <img src="57917e3d-509d-4d22-ba44-f65c449d8379.jpg" alt="Automation workflow">
+                                <img src="9e107e50-53a4-4ed6-b4ea-45b45b4215ed.jpg" alt="Automation workflow">
                                 <div class="cs-strip-zoom-icon"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
                                 <div class="cs-strip-card-overlay"><span>Automation Workflow</span></div>
                             </div>
@@ -4564,7 +4572,7 @@ body.light-mode h3 {
                         <div class="cs-film-strip" id="cs2-strip">
 
                             <div class="cs-strip-card" onclick="openLightbox('cs2-lb', 0)">
-                                <img src="9e107e50-53a4-4ed6-b4ea-45b45b4215ed.jpg" alt="OralDNA quiz funnel form">
+                                <img src="57917e3d-509d-4d22-ba44-f65c449d8379.jpg" alt="OralDNA quiz funnel form">
                                 <div class="cs-strip-zoom-icon"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
                                 <div class="cs-strip-card-overlay"><span>Quiz Form</span></div>
                             </div>
@@ -4941,10 +4949,10 @@ body.light-mode h3 {
             'cs1-lb': [
                 { src: '5520dbc1-9a8f-4892-bc94-71ced6882dc4.jpg', caption: 'WhatsApp Chat — Pricing Enquiry' },
                 { src: '62447f98-78ae-4d76-840f-2cf09e9b70b5.jpg', caption: 'WhatsApp Chat — Booking Notification' },
-                { src: '57917e3d-509d-4d22-ba44-f65c449d8379.jpg', caption: 'n8n Automation Workflow' }
+                { src: '9e107e50-53a4-4ed6-b4ea-45b45b4215ed.jpg', caption: 'n8n Automation Workflow' }
             ],
             'cs2-lb': [
-                { src: '9e107e50-53a4-4ed6-b4ea-45b45b4215ed.jpg',  caption: 'OralDNA — Quiz Funnel Form' },
+                { src: '57917e3d-509d-4d22-ba44-f65c449d8379.jpg',  caption: 'OralDNA — Quiz Funnel Form' },
                 { src: '8daba75b-0d20-47f9-ade1-dcd7d292e7d1.jpg',  caption: 'WhatsApp Nurture Automation Workflow' },
                 { src: 'a5da5db7-0c30-42df-9672-4bc3379fdef8.jpg',  caption: 'GoHighLevel — Tag & Branching Logic' },
                 { src: 'e4b02b6d-e817-42f2-869a-2c7b0aaa6edb.jpg',  caption: 'Quiz Submissions Dashboard' }
