@@ -1538,6 +1538,21 @@
             letter-spacing: 1px;
         }
 
+        /* Lock hover overlay text + icon to dark-mode colors in light mode */
+        body.light-mode .cs-strip-card-overlay {
+            background: linear-gradient(to top, rgba(10,14,39,0.75) 0%, transparent 55%) !important;
+        }
+        body.light-mode .cs-strip-card-overlay span {
+            color: var(--cyan) !important;
+        }
+        body.light-mode .cs-strip-zoom-icon {
+            background: rgba(0,240,255,0.18) !important;
+            border-color: rgba(0,240,255,0.4) !important;
+        }
+        body.light-mode .cs-strip-zoom-icon svg {
+            stroke: var(--cyan) !important;
+        }
+
         .cs-strip-zoom-icon {
             position: absolute;
             top: 10px;
